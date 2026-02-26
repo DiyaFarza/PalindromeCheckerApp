@@ -1,40 +1,53 @@
 import java.util.Scanner;
 
-public class PalindromeCheckerApp {
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
+// Service Class: Encapsulates the logic
+class PalindromeService {
 
-        System.out.println("--- UC10: Case-Insensitive & Space-Ignored Checker ---");
-        System.out.print("Enter a phrase: ");
-        String input = scanner.nextLine();
-
-        // Step 1: Normalize the string
-        // [^a-zA-Z0-9] matches anything that is NOT a letter or number
-        String normalized = input.replaceAll("[^a-zA-Z0-9]", "").toLowerCase();
-
-        // Step 2: Apply Two-Pointer logic (from UC4)
-        if (isPalindrome(normalized)) {
-            System.out.println("Result: Success! It is a palindrome.");
-        } else {
-            System.out.println("Result: Not a palindrome.");
+    /**
+     * Checks if a string is a palindrome using internal logic.
+     * This method is encapsulated and can be reused in other apps.
+     */
+    public boolean checkPalindrome(String input) {
+        if (input == null || input.isEmpty()) {
+            return true;
         }
 
-        scanner.close();
-    }
-
-    public static boolean isPalindrome(String text) {
-        if (text.isEmpty()) return true;
+        // Internal Normalization (Encapsulated)
+        String clean = input.replaceAll("[^a-zA-Z0-9]", "").toLowerCase();
 
         int left = 0;
-        int right = text.length() - 1;
+        int right = clean.length() - 1;
 
         while (left < right) {
-            if (text.charAt(left) != text.charAt(right)) {
+            if (clean.charAt(left) != clean.charAt(right)) {
                 return false;
             }
             left++;
             right--;
         }
         return true;
+    }
+}
+
+// Main Application Class
+public class PalindromeCheckerApp {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        // Instantiate the Service Object
+        PalindromeService service = new PalindromeService();
+
+        System.out.println("--- UC11: Object-Oriented Palindrome Service ---");
+        System.out.print("Enter text to validate: ");
+        String userInput = scanner.nextLine();
+
+        // Using the service object
+        if (service.checkPalindrome(userInput)) {
+            System.out.println("Result: The input is a valid palindrome.");
+        } else {
+            System.out.println("Result: Not a palindrome.");
+        }
+
+        scanner.close();
     }
 }
