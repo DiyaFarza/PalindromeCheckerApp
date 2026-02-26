@@ -1,4 +1,5 @@
 import java.util.Scanner;
+import java.util.Stack;
 public class PalindromeCheckerApp {
     public static  void main(String[] args) {
 
@@ -6,16 +7,17 @@ public class PalindromeCheckerApp {
 
 
 
+
                 Scanner scanner = new Scanner(System.in);
 
-                System.out.println("--- UC4: Character Array Palindrome Checker ---");
+                System.out.println("--- UC5: Stack-Based Palindrome Checker ---");
                 System.out.print("Enter a string: ");
                 String input = scanner.nextLine();
 
-                // Step 1: Convert string to char[]
-                char[] charArray = input.toLowerCase().toCharArray();
+                // Normalize input: remove case sensitivity
+                String cleanedInput = input.toLowerCase();
 
-                if (isPalindrome(charArray)) {
+                if (isPalindrome(cleanedInput)) {
                     System.out.println("\"" + input + "\" is a palindrome.");
                 } else {
                     System.out.println("\"" + input + "\" is not a palindrome.");
@@ -24,20 +26,23 @@ public class PalindromeCheckerApp {
                 scanner.close();
             }
 
-            public static boolean isPalindrome(char[] chars) {
-                // Step 2: Use Two-Pointer approach
-                int left = 0;
-                int right = chars.length - 1;
+            public static boolean isPalindrome(String input) {
+                Stack<Character> stack = new Stack<>();
 
-                while (left < right) {
-                    // Step 3: Compare start & end characters
-                    if (chars[left] != chars[right]) {
-                        return false; // Mismatch found, not a palindrome
-                    }
-                    left++;  // Move forward
-                    right--; // Move backward
+                // Step 1: Push all characters onto the stack
+                for (int i = 0; i < input.length(); i++) {
+                    stack.push(input.charAt(i));
                 }
-                return true; // All characters matched
+
+                // Step 2: Pop and compare with the original string characters
+                for (int i = 0; i < input.length(); i++) {
+                    // Pop gives the characters in reverse order
+                    if (input.charAt(i) != stack.pop()) {
+                        return false; // Mismatch found
+                    }
+                }
+
+                return true; // Sequence matched perfectly
             }
         }
 
