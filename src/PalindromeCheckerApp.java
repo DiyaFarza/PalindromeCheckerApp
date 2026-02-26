@@ -1,43 +1,40 @@
 import java.util.Scanner;
 
 public class PalindromeCheckerApp {
-
     public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        System.out.print("Enter string to check: ");
-        String input = sc.nextLine();
+        Scanner scanner = new Scanner(System.in);
 
-        // Step 1: Clean the string (optional, but good practice)
-        String cleanInput = input.replaceAll("\\s+", "").toLowerCase();
+        System.out.println("--- UC10: Case-Insensitive & Space-Ignored Checker ---");
+        System.out.print("Enter a phrase: ");
+        String input = scanner.nextLine();
 
-        // Step 2: Recursive Call
-        if (isPalindrome(cleanInput, 0, cleanInput.length() - 1)) {
-            System.out.println("Result: \"" + input + "\" is a palindrome.");
+        // Step 1: Normalize the string
+        // [^a-zA-Z0-9] matches anything that is NOT a letter or number
+        String normalized = input.replaceAll("[^a-zA-Z0-9]", "").toLowerCase();
+
+        // Step 2: Apply Two-Pointer logic (from UC4)
+        if (isPalindrome(normalized)) {
+            System.out.println("Result: Success! It is a palindrome.");
         } else {
-            System.out.println("Result: \"" + input + "\" is NOT a palindrome.");
+            System.out.println("Result: Not a palindrome.");
         }
-        sc.close();
+
+        scanner.close();
     }
 
-    /**
-     * Recursive method to check palindrome
-     * @param str The string to check
-     * @param start The left pointer
-     * @param end The right pointer
-     * @return true if palindrome, false otherwise
-     */
-    public static boolean isPalindrome(String str, int start, int end) {
-        // Base Condition 1: If pointers cross, all characters matched
-        if (start >= end) {
-            return true;
-        }
+    public static boolean isPalindrome(String text) {
+        if (text.isEmpty()) return true;
 
-        // Base Condition 2: If characters at current positions don't match
-        if (str.charAt(start) != str.charAt(end)) {
-            return false;
-        }
+        int left = 0;
+        int right = text.length() - 1;
 
-        // Recursive Step: Move pointers inward
-        return isPalindrome(str, start + 1, end - 1);
+        while (left < right) {
+            if (text.charAt(left) != text.charAt(right)) {
+                return false;
+            }
+            left++;
+            right--;
+        }
+        return true;
     }
 }
