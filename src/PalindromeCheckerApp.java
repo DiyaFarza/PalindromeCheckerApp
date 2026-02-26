@@ -1,50 +1,58 @@
 import java.util.Scanner;
 import java.util.Stack;
+import java.util.Queue;
+import java.util.LinkedList;
 public class PalindromeCheckerApp {
     public static  void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
 
+        System.out.println("--- UC6: Queue + Stack Palindrome Checker ---");
+        System.out.print("Enter a string: ");
+        String input = scanner.nextLine();
 
+        // Normalize input for comparison
+        String cleanedInput = input.toLowerCase();
 
+        if (isPalindrome(cleanedInput)) {
+            System.out.println("\"" + input + "\" is a palindrome.");
+        } else {
+            System.out.println("\"" + input + "\" is not a palindrome.");
+        }
 
+        scanner.close();
+    }
 
+    public static boolean isPalindrome(String input) {
+        // Queue follows FIFO (Original Order)
+        Queue<Character> queue = new LinkedList<>();
+        // Stack follows LIFO (Reverse Order)
+        Stack<Character> stack = new Stack<>();
 
-                Scanner scanner = new Scanner(System.in);
+        // Step 1: Enqueue and Push characters
+        for (int i = 0; i < input.length(); i++) {
+            char c = input.charAt(i);
+            queue.add(c);
+            stack.push(c);
+        }
 
-                System.out.println("--- UC5: Stack-Based Palindrome Checker ---");
-                System.out.print("Enter a string: ");
-                String input = scanner.nextLine();
-
-                // Normalize input: remove case sensitivity
-                String cleanedInput = input.toLowerCase();
-
-                if (isPalindrome(cleanedInput)) {
-                    System.out.println("\"" + input + "\" is a palindrome.");
-                } else {
-                    System.out.println("\"" + input + "\" is not a palindrome.");
-                }
-
-                scanner.close();
-            }
-
-            public static boolean isPalindrome(String input) {
-                Stack<Character> stack = new Stack<>();
-
-                // Step 1: Push all characters onto the stack
-                for (int i = 0; i < input.length(); i++) {
-                    stack.push(input.charAt(i));
-                }
-
-                // Step 2: Pop and compare with the original string characters
-                for (int i = 0; i < input.length(); i++) {
-                    // Pop gives the characters in reverse order
-                    if (input.charAt(i) != stack.pop()) {
-                        return false; // Mismatch found
-                    }
-                }
-
-                return true; // Sequence matched perfectly
+        // Step 2: Compare Dequeue vs Pop
+        while (!stack.isEmpty()) {
+            // Dequeue gets the first char, Pop gets the last char
+            if (!queue.remove().equals(stack.pop())) {
+                return false; // Mismatch detected
             }
         }
+
+        return true; // All characters matched
+    }
+}
+
+
+
+
+
+
+
 
 
 
